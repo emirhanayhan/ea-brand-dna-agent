@@ -1,0 +1,52 @@
+name: ea-brand
+
+services:
+  ea-brand-mongodb:
+    image: mongo:7
+    container_name: ea-brand-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-ea_brand}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-ea_brand_dev}
+      MONGO_INITDB_DATABASE: ${DB_NAME:-brand_intelligence}
+    volumes:
+      - ea-brand-mongodb-data:/data/db
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mongosh",
+          "--username",
+          "ea_brand",
+          "--password",
+          "ea_brand_dev",
+          "--authenticationDatabase",
+          "admin",
+          "--eval",
+          "db.adminCommand('ping')",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  ea-brand-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ea-brand-agent
+    environment:
+      DB_NAME: ${DB_NAME:-brand_intelligence}
+      MONGO_CONNECTION_STRING: mongodb://${MONGO_USER:-ea_brand}:${MONGO_PASSWORD:-ea_brand_dev}@ea-brand-mongodb:27017/?authSource=admin
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      LLM_MODEL: ${LLM_MODEL:-gemini-3.5-flash}
+    depends_on:
+      ea-brand-mongodb:
+        condition: service_healthy
+    profiles:
+      - app
+
+volumes:
+  ea-brand-mongodb-data:

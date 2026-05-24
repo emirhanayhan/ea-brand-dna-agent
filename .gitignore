@@ -1,0 +1,13 @@
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+.DS_Store
+outputs/
+output/
+requirement_spec/
+# Defensive: stray Path(MagicMock(...)) calls (e.g. from ad-hoc test runners
+# that pass positional args without honoring @patch's appended mock params)
+# can mkdir a folder named like "MagicMock/<name>/<id>" at the repo root.
+MagicMock/
