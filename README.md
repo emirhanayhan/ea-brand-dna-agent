@@ -90,7 +90,6 @@ These `brand_dna_*` keys are **not** LLM cost controls.
 |-----|---------|---------|
 | `brand_dna_palette_size` | `8` | Dominant colors extracted locally (`extract_palette` — no Gemini call) |
 | `brand_dna_output_dir` | `outputs` | Directory for JSON + PDF output |
-| `brand_dna_download_workers` | `8` | Parallel HTTP downloads before the LLM (ignored when `main.py` injects the shared executor; then `worker_count` applies) |
 | `brand_dna_min_images_per_cluster` | `2` | Each rendered cluster is backfilled from `unassigned_image_indices` until it has at least this many reps |
 | `brand_dna_max_images_per_cluster` | `3` | Cap on images shown per cluster strip in the PDF |
 | `brand_dna_min_cluster_count` | `3` | Hard floor on rendered clusters — empty clusters are kept rather than dropped if removing them would breach this floor |
