@@ -17,7 +17,6 @@ test_config = {
     "brand_dna_fashion_filter_pretrained": "openai",
     "brand_dna_fashion_filter_threshold": 0.55,
     "brand_dna_output_dir": "outputs",
-    "brand_dna_download_workers": 8,
     "mongo_connection_string": "mongodb://ea_brand:ea_brand_dev@localhost:27017/?authSource=admin",
     "db_name": "ea_brand_agent_test",
     "gemini_api_key": None,

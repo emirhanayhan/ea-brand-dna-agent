@@ -60,7 +60,6 @@ class BrandDnaService:
         self.cluster_target = int(settings["brand_dna_cluster_target"])
         self.palette_size = int(settings["brand_dna_palette_size"])
         self.output_dir = Path(settings["brand_dna_output_dir"])
-        self.download_workers = int(settings["brand_dna_download_workers"])
         # Cluster sizing knobs. Defaults match case-study expectations: each
         # cluster should ship at least 2 representative images, the PDF caps
         # at 3 images per cluster, and we never drop below 3 clusters total
@@ -229,15 +228,7 @@ class BrandDnaService:
             data = self.http_client.get_stream(url, max_bytes=_IMAGE_FETCH_MAX_BYTES)
             return url, data
 
-        # Reuse the injected shared executor when one is provided
-        # (production path); otherwise fall back to a per-call pool so
-        # tests and ad-hoc runs still work.
-        executor_cm = (
-            nullcontext(self.executor)
-            if self.executor is not None
-            else ThreadPoolExecutor(max_workers=self.download_workers)
-        )
-        with executor_cm as pool:
+        with self.executor as pool:
             for url, data in pool.map(_fetch, images):
                 if data:
                     results[url] = data

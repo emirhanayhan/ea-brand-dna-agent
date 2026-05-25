@@ -43,7 +43,6 @@ stage_config = {
         os.getenv("BRAND_DNA_FASHION_FILTER_THRESHOLD", "0.55")
     ),
     "brand_dna_output_dir": os.getenv("BRAND_DNA_OUTPUT_DIR", "outputs"),
-    "brand_dna_download_workers": int(os.getenv("BRAND_DNA_DOWNLOAD_WORKERS", "8")),
     "mongo_connection_string": os.getenv("MONGO_CONNECTION_STRING"),
     "db_name": os.getenv("DB_NAME", "brand_intelligence"),
     "gemini_api_key": os.getenv("GEMINI_API_KEY"),
